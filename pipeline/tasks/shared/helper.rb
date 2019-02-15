@@ -1,8 +1,9 @@
 @cloudformation = MinimalPipeline::Cloudformation.new
 @keystore = MinimalPipeline::Keystore.new
+@docker = MinimalPipeline::Docker.new
 
 ENV['AWS_REGION'] = 'us-east-1'
-@port = '8088'
+@port = '8090'
 
 def get_subnets(subnet_cluster)
   subnet_cluster.upcase!
