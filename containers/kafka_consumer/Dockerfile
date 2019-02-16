@@ -7,10 +7,10 @@ RUN apt-get update \
   && gem install english --no-ri --no-rdoc
 
 # Copy up our startup script
-COPY server-run.sh /opt/server-run.sh
+COPY run-server.sh /opt/run-server.sh
 
-RUN mkdir -p /opt/kafka-consumer && \
-  && chmod +x /opt/server-run.sh \
+RUN mkdir -p /opt/kafka-consumer \
+  && chmod +x /opt/run-server.sh \
   && chown nobody /opt/kafka-consumer
 
 # Poke a hole for the web server
@@ -23,4 +23,4 @@ COPY kafka-consumer.jar \
   /opt/kafka-consumer/kafka-consumer.jar
 
 # Start the web server
-CMD ["/opt/server-run.sh"]
+CMD ["/opt/run-server.sh"]

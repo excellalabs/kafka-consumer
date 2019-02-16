@@ -1,0 +1,14 @@
+version: '2.1'
+services:
+  java_app:
+    build: ./containers/kafka_consumer
+    container_name: kafka-consumer
+    ports:
+      - "8090:8090"
+    environment:
+      POSTGRES_HOST: localhost
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DBNAME: postgres
+      KAFKA_BOOTSTRAP_SERVERS: localhost:29092
