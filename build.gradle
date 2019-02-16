@@ -13,13 +13,26 @@ repositories {
 	mavenCentral()
 }
 
+ext {
+	postgresDriver = 'org.postgresql.Driver'
+	postgresDefaultDbName = 'postgres'
+	postgresDbName = 'postgres'
+	postgresSslEnabled = false
+	postgresHost = System.getenv('POSTGRES_HOST')
+	postgresPort = System.getenv('POSTGRES_PORT')
+	postgresUrl = "jdbc:postgresql://${postgresHost}:${postgresPort}/${postgresDbName}"
+	postgresUser = System.getenv('POSTGRES_USER')
+	postgresPassword = System.getenv('POSTGRES_PASSWORD')
+}
+
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter'
-	// implementation 'org.apache.kafka:kafka-streams'
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-jersey'
 	implementation 'org.springframework.kafka:spring-kafka'
 	runtimeOnly 'org.postgresql:postgresql'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.kafka:spring-kafka-test'
-  //log4j
-  compile('org.apache.logging.log4j:log4j-to-slf4j:2.7')
+	//log4j
+	compile('org.apache.logging.log4j:log4j-to-slf4j:2.7')
 }
