@@ -17,6 +17,10 @@ node {
     rake 'rubocop'
   }
 
+  stage('Build App') {
+    rake 'assemble'
+  }
+
   stage('Build') {
     rake 'build:ecs'
   }
