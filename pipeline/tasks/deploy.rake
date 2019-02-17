@@ -22,12 +22,12 @@ task :'deploy:rds' do
     'provisioning/rds.yml'
   )
 
-  @cloudformation.stack_outputs(stack_name)
+  outputs = @cloudformation.stack_outputs(stack_name)
 
-  @keystore.store('KAFKA_CONSUMER_RDS_HOST', stack_outputs['DbHost'])
-  @keystore.store('KAFKA_CONSUMER_RDS_PORT', stack_outputs['DbPort'])
-  puts "db host: #{stack_outputs['DbHost']}"
-  puts "db port: #{stack_outputs['DbPort']}"
+  @keystore.store('KAFKA_CONSUMER_RDS_HOST', outputs['DbHost'])
+  @keystore.store('KAFKA_CONSUMER_RDS_PORT', outputs['DbPort'])
+  puts "db host: #{outputs['DbHost']}"
+  puts "db port: #{outputs['DbPort']}"
 end
 
 desc 'Deploy Kafka Consumer ECS'
