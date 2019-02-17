@@ -92,7 +92,7 @@ Resources:
           PortMappings:
             - ContainerPort: !Ref Port
           Environment:
-            - Name: KSQL_BOOTSTRAP_SERVERS
+            - Name: KAFKA_BOOTSTRAP_SERVERS
               Value: !Ref KafkaBootstrapServer
             - Name: POSTGRES_HOST
               Value: !Ref DbHost
