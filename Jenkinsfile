@@ -26,7 +26,7 @@ node {
   }
 
   stage('Deployment - RDS') {
-    rake 'deploy:ecs'
+    rake 'deploy:rds'
   }
 
   stage('Deployment - ECS') {
