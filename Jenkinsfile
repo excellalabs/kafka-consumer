@@ -25,6 +25,10 @@ node {
     rake 'build:ecs'
   }
 
+  stage('Deployment - RDS') {
+    rake 'deploy:ecs'
+  }
+
   stage('Deployment - ECS') {
     rake 'deploy:ecs'
   }
