@@ -1,3 +1,4 @@
+# rubocop:disable Metrics/BlockLength
 desc 'Deploy RDS instance'
 task :'deploy:rds' do
   puts 'deploy RDS cloudformation template'
@@ -34,5 +35,43 @@ desc 'Deploy Kafka Consumer ECS'
 task :'deploy:ecs' do
   puts 'deploy ecs cloudformation template'
 
+  stack_name = 'KAFKA-CONSUMER-ECS'
+  service_name = 'kafka-consumer'
+  ecs_cluster = 'EX-INTERNAL-ECS-CLUSTER'
+  private_subnets = get_subnets('private')
+  docker_repo = @keystore.retrieve('ECR_REPOSITORY')
+  docker_image = "#{docker_repo}/kafka-consumer:latest"
+  private_sg = @keystore.retrieve('PRIVATE_SECURITY_GROUP')
+  kafka_url = @keystore.retrieve('KAFKA_BOOTSTRAP_SERVERS')
+  db_host = @keystore.retrieve('KAFKA_CONSUMER_RDS_HOST')
+  db_port = @keystore.retrieve('KAFKA_CONSUMER_RDS_PORT')
+  db_user = @keystore.retrieve('KAFKA_CONSUMER_RDS_USER')
+  db_password = @keystore.retrieve('KAFKA_CONSUMER_RDS_PASSWORD')
+  db_name = 'postgres'
+
+  parameters = {
+    'Cluster' => ecs_cluster,
+    'ServiceName' => service_name,
+    'VPC' => @keystore.retrieve('VPC_ID'),
+    'PrivateSubnetIds' => private_subnets,
+    'EcsSecurityGroup' => private_sg,
+    'Image' => docker_image,
+    'Port' => @port,
+    'KafkaBootstrapServer' => kafka_url,
+    'DbHost' => db_host,
+    'DbPort' => db_port,
+    'DbUser' => db_user,
+    'DbPassword' => db_password,
+    'DbName' => db_name
+  }
+
+  @cloudformation.deploy_stack(
+    stack_name,
+    parameters,
+    'provisioning/ecs.yml',
+    ['CAPABILITY_NAMED_IAM']
+  )
+
   puts 'done!'
 end
+# rubocop:enable Metrics/BlockLength
