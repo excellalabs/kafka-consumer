@@ -88,7 +88,6 @@ Resources:
       TaskRoleArn: !Ref TaskRole
       ContainerDefinitions:
         - Name: !Ref ServiceName
-          HostName: fraud-consumer
           Image: !Ref Image
           PortMappings:
             - ContainerPort: !Ref Port
