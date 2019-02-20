@@ -2,7 +2,7 @@ desc 'Build Kafka Consumer image'
 task :'build:ecs' do
   puts 'buikld docker image for kafka consumer'
 
-  # system('$(aws ecr get-login --no-include-email --region us-east-1)')
+  system('$(aws ecr get-login --no-include-email --region us-east-1)')
 
   docker_repo = @keystore.retrieve('ECR_REPOSITORY')
   docker_image = "#{docker_repo}/kafka-consumer:latest"

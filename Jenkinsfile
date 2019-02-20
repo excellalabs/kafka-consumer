@@ -22,7 +22,7 @@ node {
   }
 
   stage('Build') {
-    // rake 'build:ecs'
+    rake 'build:ecs'
   }
 
   stage('Deployment - RDS') {
