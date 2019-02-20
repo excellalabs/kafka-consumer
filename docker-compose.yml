@@ -3,6 +3,7 @@ services:
   java_app:
     build: ./containers/kafka_consumer
     container_name: kafka-consumer
+    hostname: fraud-consumer
     ports:
       - "8090:8090"
     environment:

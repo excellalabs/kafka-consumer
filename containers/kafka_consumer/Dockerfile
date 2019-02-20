@@ -13,6 +13,10 @@ RUN mkdir -p /opt/kafka-consumer \
   && chmod +x /opt/run-server.sh \
   && chown nobody /opt/kafka-consumer
 
+RUN curl http://central.maven.org/maven2/io/prometheus/jmx/jmx_prometheus_javaagent/0.3.1/jmx_prometheus_javaagent-0.3.1.jar > /opt/kafka-consumer/jmx_prometheus_javaagent.jar
+
+COPY prometheus-config.yml /opt/kafka-consumer/prometheus-config.yml
+
 # Poke a hole for the web server
 EXPOSE 8090
 
