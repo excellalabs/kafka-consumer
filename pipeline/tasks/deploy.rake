@@ -2,19 +2,19 @@
 desc 'Deploy RDS instance'
 task :'deploy:rds' do
   puts 'deploy RDS cloudformation template'
-  stack_name = 'KAFKA-CONSUMER-RDS'
+  stack_name = 'XSP-KAFKA-CONSUMER-RDS'
 
   parameters = {
     'Vpc' => @keystore.retrieve('VPC_ID'),
-    'DbSubnetGroupId' => @keystore.retrieve('PUBLIC_RDS_SUBNET_GROUP_ID'),
+    'DbSubnetGroupId' => @keystore.retrieve('DB_SUBNET_ID'),
     'DbInstanceIdentifier' => stack_name,
     'DbSnapshotIdentifier' => stack_name,
     'DbUsername' => @keystore.retrieve('KAFKA_CONSUMER_RDS_USER'),
     'DbPassword' => @keystore.retrieve('KAFKA_CONSUMER_RDS_PASSWORD'),
     'DbInstanceClass' => 'db.t2.micro',
-    'DbAllocatedStorage' => '20',
+    'DbAllocatedStorage' => '10',
     'MultiAzEnabled' => 'false',
-    'DbParameterGroup' => 'default.postgres9.6'
+    'DbParameterGroup' => 'default.postgres11'
   }
 
   @cloudformation.deploy_stack(
@@ -35,12 +35,11 @@ desc 'Deploy Kafka Consumer ECS'
 task :'deploy:ecs' do
   puts 'deploy ecs cloudformation template'
 
-  stack_name = 'KAFKA-CONSUMER-ECS'
+  stack_name = 'XSP-KAFKA-CONSUMER-ECS'
   service_name = 'kafka-consumer'
-  ecs_cluster = 'EX-INTERNAL-ECS-CLUSTER'
+  ecs_cluster = @keystore.retrieve('INTERNAL_ECS_CLUSTER')
   private_subnets = get_subnets('private')
-  docker_repo = @keystore.retrieve('ECR_REPOSITORY')
-  docker_image = "#{docker_repo}/kafka-consumer:latest"
+
   private_sg = @keystore.retrieve('PRIVATE_SECURITY_GROUP')
   kafka_url = @keystore.retrieve('KAFKA_BOOTSTRAP_SERVERS')
   db_host = @keystore.retrieve('KAFKA_CONSUMER_RDS_HOST')
@@ -55,7 +54,7 @@ task :'deploy:ecs' do
     'VPC' => @keystore.retrieve('VPC_ID'),
     'PrivateSubnetIds' => private_subnets,
     'EcsSecurityGroup' => private_sg,
-    'Image' => docker_image,
+    'Image' => @docker_image,
     'Port' => @port,
     'KafkaBootstrapServer' => kafka_url,
     'DbHost' => db_host,
