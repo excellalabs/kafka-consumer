@@ -1,4 +1,4 @@
-FROM java:8
+FROM openjdk:8
 
 RUN apt-get update \
   && apt-get -y upgrade \
