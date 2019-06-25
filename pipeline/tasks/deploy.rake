@@ -14,7 +14,8 @@ task :'deploy:rds' do
     'DbInstanceClass' => 'db.t2.micro',
     'DbAllocatedStorage' => '10',
     'MultiAzEnabled' => 'false',
-    'DbParameterGroup' => 'default.postgres11'
+    'DbParameterGroup' => \
+      @keystore.retrieve('KAFKA_CONSUMER_RDS_PARAMETER_GROUP')
   }
 
   @cloudformation.deploy_stack(
