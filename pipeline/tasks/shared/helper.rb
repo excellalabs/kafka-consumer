@@ -5,6 +5,10 @@
 ENV['AWS_REGION'] = 'us-east-1'
 @port = '8090'
 
+@ecs_repo_name = 'xsp-kafka-consumer'
+docker_repo = @keystore.retrieve('ECR_REPOSITORY')
+@docker_image = "#{docker_repo}/#{@ecs_repo_name}:latest"
+
 def get_subnets(subnet_cluster)
   subnet_cluster.upcase!
   subnet1 = @keystore.retrieve("#{subnet_cluster}_SUBNET_1")

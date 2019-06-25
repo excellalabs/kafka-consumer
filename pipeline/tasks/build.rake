@@ -4,16 +4,12 @@ task :'build:ecs' do
 
   system('$(aws ecr get-login --no-include-email --region us-east-1)')
 
-  repo_name = 'xsp-kafka-consumer'
-
   # create the ecr repo if not exists
   system("ws ecr describe-repositories --region us-east-1 \
-    --repository-names #{@ecr_repo_name} || \
+    --repository-names #{@ecs_repo_name} || \
     aws ecr create-repository --region us-east-1 \
-    --repository-name #{@ecr_repo_name}")
+    --repository-name #{@ecs_repo_name}")
 
-  docker_repo = @keystore.retrieve('ECR_REPOSITORY')
-  @docker_image = "#{docker_repo}/#{repo_name}:latest"
   @docker.build_docker_image(@docker_image, 'containers/kafka_consumer')
   @docker.push_docker_image(@docker_image)
 

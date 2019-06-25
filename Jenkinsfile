@@ -44,7 +44,7 @@ def rvm(String version) {
     rvm use default ${version}
     rvm alias create default ruby-${version}
 
-    which bundle || gem install bundler
+    which bundle || gem install bundler -v 1.17.3
     bundle install
   """
 }
